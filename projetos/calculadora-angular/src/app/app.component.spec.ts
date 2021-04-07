@@ -1,12 +1,19 @@
 import { TestBed } from '@angular/core/testing';
+// import { inject } from '@angular/core';
 import { AppComponent } from './app.component';
+
+import { CalculadoraAngularModule } from './calculadora-angular';
+
 
 describe('AppComponent', () => {
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
+   TestBed.configureTestingModule({
       declarations: [
         AppComponent
       ],
+      imports:[
+         CalculadoraAngularModule
+      ],      
     }).compileComponents();
   });
 
@@ -15,12 +22,5 @@ describe('AppComponent', () => {
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
-
-  // it(`should have as title 'calculadora-angular'`, () => {
-  //   const fixture = TestBed.createComponent(AppComponent);
-  //   const app = fixture.componentInstance;
-  //   expect(app.title).toEqual('calculadora-angular');
-  // });
-
 
 });
