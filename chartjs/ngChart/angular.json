@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "calculadora": {
+    "ngChart": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,20 +13,19 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
-            "outputPath": "dist/calculadora",
+            "outputPath": "dist/ngChart",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
-           ],
+              "src/styles.css"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -41,7 +40,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -53,7 +51,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
                 }
               ]
             }
@@ -62,18 +61,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "calculadora:build"
+            "browserTarget": "ngChart:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "calculadora:build:production"
+              "browserTarget": "ngChart:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "calculadora:build"
+            "browserTarget": "ngChart:build"
           }
         },
         "test": {
@@ -110,15 +109,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "calculadora:serve"
+            "devServerTarget": "ngChart:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "calculadora:serve:production"
+              "devServerTarget": "ngChart:serve:production"
             }
           }
         }
       }
-    }},
-  "defaultProject": "calculadora"
+    }
+  },
+  "defaultProject": "ngChart"
 }

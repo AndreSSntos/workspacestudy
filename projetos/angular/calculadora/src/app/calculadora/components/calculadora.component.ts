@@ -20,6 +20,11 @@ export class CalculadoraComponent implements OnInit {
   	this.limpar();
   }
 
+  /**
+   * Inicializa todos os operadores para os valores padrão.
+   *
+   * @return void
+   */
   limpar(): void {
   	this.numero1 = '0';
   	this.numero2 = null;
@@ -27,6 +32,12 @@ export class CalculadoraComponent implements OnInit {
   	this.operacao = null;
   }
 
+  /**
+   * Adiciona o número selecionado para o cálculo posteriormente.
+   *
+   * @param string numero
+   * @return void
+   */
   adicionarNumero(numero: string): void {
   	if (this.operacao === null) {
   	  this.numero1 = this.concatenarNumero(this.numero1, numero);
@@ -35,19 +46,25 @@ export class CalculadoraComponent implements OnInit {
   	}
   }
 
- 
+  /**
+   * Returna o valor concatenado. Trata o separador decimal.
+   *
+   * @param string numAtual
+   * @param string numConcat
+   * @return string
+   */
   concatenarNumero(numAtual: string, numConcat: string): string {
-  	
+  	// caso contenha apenas '0' ou null, reinicia o valor
     if (numAtual === '0' || numAtual === null) {
   	  numAtual = '';
   	}
 
-   
+    // primeiro dígito é '.', concatena '0' antes do ponto
   	if (numConcat === '.' && numAtual === '') {
   	  return '0.';
   	}
 
-   
+    // caso '.' digitado e já contenha um '.', apenas retorna
   	if (numConcat === '.' && numAtual.indexOf('.') > -1) {
   	  return numAtual;
   	}
@@ -55,14 +72,23 @@ export class CalculadoraComponent implements OnInit {
   	return numAtual + numConcat;
   }
 
+  /**
+   * Executa lógica quando um operador for selecionado.
+   * Caso já possua uma operação selecionada, executa a 
+   * operação anterior, e define a nova operação.
+   *
+   * @param string operacao
+   * @return void
+   */
   definirOperacao(operacao: string): void {
-   
+    // apenas define a operação caso não exista uma
   	if (this.operacao === null) {
       this.operacao = operacao;
       return;
   	}
 
-   
+    /* caso operação definida e número 2 selecionado,
+       efetua o cálculo da operação */
   	if (this.numero2 !== null) {
   		this.resultado = this.calculadoraService.calcular(
   			parseFloat(this.numero1), 
@@ -75,7 +101,11 @@ export class CalculadoraComponent implements OnInit {
   	}
   }
 
- 
+  /**
+   * Efetua o cálculo de uma operação.
+   *
+   * @return void
+   */
   calcular(): void {
   	if (this.numero2 === null) {
   		return;
@@ -87,7 +117,11 @@ export class CalculadoraComponent implements OnInit {
   		this.operacao);
   }
 
- 
+  /**
+   * Retorna o valor a ser exibido na tela da calculadora.
+   *
+   * @return string
+   */
   get display(): string {
   	if (this.resultado !== null) {
   		return this.resultado.toString();
@@ -96,6 +130,16 @@ export class CalculadoraComponent implements OnInit {
   		return this.numero2;
   	}
   	return this.numero1;
+  }
+
+  save(){
+	  const data = JSON.stringify( this.resultado );
+	  localStorage.setItem('resultado', data);
+  }
+
+  load(){
+	  const data = localStorage.getItem('resultado');
+	  this.resultado = JSON.parse(data);
   }
 
 }
