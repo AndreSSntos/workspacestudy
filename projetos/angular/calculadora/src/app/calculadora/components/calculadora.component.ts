@@ -13,11 +13,13 @@ export class CalculadoraComponent implements OnInit {
   private numero2: string;
   private resultado: number;
   private operacao: string;
+  private calculo: string;
 
-  constructor(private calculadoraService: CalculadoraService) { }
+  constructor(private calculadoraService: CalculadoraService) {
+  }
 
   ngOnInit() {
-  	this.limpar();
+    this.limpar();
   }
 
   /**
@@ -26,10 +28,10 @@ export class CalculadoraComponent implements OnInit {
    * @return void
    */
   limpar(): void {
-  	this.numero1 = '0';
-  	this.numero2 = null;
-  	this.resultado = null;
-  	this.operacao = null;
+    this.numero1 = '0';
+    this.numero2 = null;
+    this.resultado = null;
+    this.operacao = null;
   }
 
   /**
@@ -39,11 +41,11 @@ export class CalculadoraComponent implements OnInit {
    * @return void
    */
   adicionarNumero(numero: string): void {
-  	if (this.operacao === null) {
-  	  this.numero1 = this.concatenarNumero(this.numero1, numero);
-  	} else {
-  	  this.numero2 = this.concatenarNumero(this.numero2, numero);
-  	}
+    if (this.operacao === null) {
+      this.numero1 = this.concatenarNumero(this.numero1, numero);
+    } else {
+      this.numero2 = this.concatenarNumero(this.numero2, numero);
+    }
   }
 
   /**
@@ -54,22 +56,22 @@ export class CalculadoraComponent implements OnInit {
    * @return string
    */
   concatenarNumero(numAtual: string, numConcat: string): string {
-  	// caso contenha apenas '0' ou null, reinicia o valor
+    // caso contenha apenas '0' ou null, reinicia o valor
     if (numAtual === '0' || numAtual === null) {
-  	  numAtual = '';
-  	}
+      numAtual = '';
+    }
 
     // primeiro dígito é '.', concatena '0' antes do ponto
-  	if (numConcat === '.' && numAtual === '') {
-  	  return '0.';
-  	}
+    if (numConcat === '.' && numAtual === '') {
+      return '0.';
+    }
 
     // caso '.' digitado e já contenha um '.', apenas retorna
-  	if (numConcat === '.' && numAtual.indexOf('.') > -1) {
-  	  return numAtual;
-  	}
+    if (numConcat === '.' && numAtual.indexOf('.') > -1) {
+      return numAtual;
+    }
 
-  	return numAtual + numConcat;
+    return numAtual + numConcat;
   }
 
   /**
@@ -82,23 +84,23 @@ export class CalculadoraComponent implements OnInit {
    */
   definirOperacao(operacao: string): void {
     // apenas define a operação caso não exista uma
-  	if (this.operacao === null) {
+    if (this.operacao === null) {
       this.operacao = operacao;
       return;
-  	}
+    }
 
     /* caso operação definida e número 2 selecionado,
        efetua o cálculo da operação */
-  	if (this.numero2 !== null) {
-  		this.resultado = this.calculadoraService.calcular(
-  			parseFloat(this.numero1), 
-  			parseFloat(this.numero2), 
-  			this.operacao);
-  		this.operacao = operacao;
-  		this.numero1 = this.resultado.toString();
-  		this.numero2 = null;
-  		this.resultado = null;
-  	}
+    if (this.numero2 !== null) {
+      this.resultado = this.calculadoraService.calcular(
+        parseFloat(this.numero1),
+        parseFloat(this.numero2),
+        this.operacao);
+      this.operacao = operacao;
+      this.numero1 = this.resultado.toString();
+      this.numero2 = null;
+      this.resultado = null;
+    }
   }
 
   /**
@@ -107,14 +109,16 @@ export class CalculadoraComponent implements OnInit {
    * @return void
    */
   calcular(): void {
-  	if (this.numero2 === null) {
-  		return;
-  	}
+    if (this.numero2 === null) {
+      return;
+    }
 
-  	this.resultado = this.calculadoraService.calcular(
-  		parseFloat(this.numero1), 
-  		parseFloat(this.numero2), 
-  		this.operacao);
+    this.resultado = this.calculadoraService.calcular(
+      parseFloat(this.numero1),
+      parseFloat(this.numero2),
+      this.operacao);
+      this.save();
+      this.load();
   }
 
   /**
@@ -123,23 +127,27 @@ export class CalculadoraComponent implements OnInit {
    * @return string
    */
   get display(): string {
-  	if (this.resultado !== null) {
-  		return this.resultado.toString();
-  	}
-  	if (this.numero2 !== null) {
-  		return this.numero2;
-  	}
-  	return this.numero1;
-  }
+    if (this.resultado !== null) {
+      return this.resultado.toString();
+    }
+    if (this.numero2 !== null) {
+      return this.numero2;
+    }
 
-  save(){
-	  const data = JSON.stringify( this.resultado );
-	  localStorage.setItem('resultado', data);
+    return this.numero1;
+
+  }
+  save() {
+    this.calculo = this.numero1 + " " + this.operacao + " " + this.numero2 + " = " + this.resultado;
+    const data = JSON.stringify(this.calculo)
+    localStorage.setItem('Operação', data);
   }
 
   load(){
-	  const data = localStorage.getItem('resultado');
-	  this.resultado = JSON.parse(data);
+    const data = localStorage.getItem('Operação');
+    this.calculo = JSON.parse(data);
   }
+
+
 
 }
